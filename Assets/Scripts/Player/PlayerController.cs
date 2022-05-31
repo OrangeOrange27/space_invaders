@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Common;
+using UnityEngine;
 
 namespace Player
 {
@@ -6,8 +7,19 @@ namespace Player
     {
         [SerializeField] private float _speed;
         [SerializeField] private Rigidbody2D _rigidbody;
+        [SerializeField] private Health _health;
 
         public GameObject GetCharacter() => gameObject;
+
+        public void KillPlayer()
+        {
+            
+        }
+
+        private void Awake()
+        {
+            _health.OnZeroHealth += KillPlayer;
+        }
 
         private void FixedUpdate()
         {
@@ -35,6 +47,11 @@ namespace Player
             _rigidbody.velocity = vel*_speed;
             
             //todo check for borders
+        }
+        
+        private void OnDestroy()
+        {
+            _health.OnZeroHealth -= KillPlayer;
         }
     }
 }
